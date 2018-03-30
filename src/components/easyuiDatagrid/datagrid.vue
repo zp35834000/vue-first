@@ -1,17 +1,6 @@
 <template>
   <div id="">
-    <!-- <table class="easyui-datagrid" title="Basic DataGrid" id="datagrid"  style="width:700px;height:250px"
-  			data-options="singleSelect:true,collapsible:true,method:'get'">
-  		<thead>
-  			<tr>
-  				<th data-options="field:'code',width:80">Item ID</th>
-  				<th data-options="field:'name',width:100">Product</th>
-  			</tr>
-  		</thead>
-  	</table> -->
     <table id="dg"></table>
-    <div class="easyui-calendar" style="width:250px;height:250px;"></div>
-    datagridPage
   </div>
 </template>
 <script>

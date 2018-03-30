@@ -1,10 +1,11 @@
 <template>
   <div id="">
     <datagrid ></datagrid>
+    <column ></column>
   </div>
 </template>
 <script>
-import datagrid from '../../../components/datagrid'
+import {column,datagrid} from '../../../components/easyuiDatagrid/index.js'
 export default {
   data(){
     return {
@@ -12,7 +13,8 @@ export default {
     }
   },
   components: {
-    datagrid
+    datagrid,
+    column
   }
 }
 </script>
