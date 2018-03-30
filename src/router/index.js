@@ -12,6 +12,10 @@ export default new Router({
       component: HelloWorld
     },
     {
+      path: '/datagrid',
+      component: r => require.ensure([], () => r(require('../page/easyui/datagrid')), 'datagrid')
+    },
+    {
       path: '/',
       component: App,
       children: [{

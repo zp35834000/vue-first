@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import '../style/common'
+import '../config/rem'
 import { mapState, mapActions } from 'vuex'
 export default {
 	data() {
@@ -92,9 +94,9 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .main{
-    background: url(../images/1-1.jpg) no-repeat;
+    /*background: url(../images/1-1.jpg) no-repeat;*/
   }
 	.top_tips{
 		position: absolute;
