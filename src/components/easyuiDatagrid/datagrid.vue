@@ -1,6 +1,8 @@
 <template>
   <div>
-    <table :id="id" width="100%" :toolbar="'#'+id+'tb'"><slot></slot></table>
+    <table :id="id" width="100%" :toolbar="'#'+id+'tb'">
+      <slot></slot>
+    </table>
   </div>
 </template>
 <script>

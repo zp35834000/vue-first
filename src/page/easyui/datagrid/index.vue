@@ -1,6 +1,6 @@
 <template>
-  <div id="">
-    <vue-my-datagrid  opt-merge-rule='header1' :auto-merge-field=["header2"] :id="datagrid" title="测试表格" :checkbox=true  id-field="header1" query-funname="initDatagrid3" if-java-fx="true" :check-on-select="false">
+  <div>
+    <vue-my-datagrid  opt-merge-rule='header1' :auto-merge-field=["header2"] :id="datagrid" title="测试表格" :checkbox=true  id-field="header1" query-funname="initDatagrid3" :if-java-fx=true :check-on-select="false">
       <vue-my-column :datagrid-id='datagrid' title="<a href='#' onclick='openDetailedEchart(123,cpu)'>和并列</a>"  column-index=0 colspan=2></vue-my-column>
       <vue-my-column :datagrid-id='datagrid' :width=300 :merge-rule={index:0,field:'header1',rowspan:4} field="header1" title="列1" width="180" column-index=1 replace="001_new001,003_new003"  query="true"></vue-my-column>
       <vue-my-column :datagrid-id='datagrid' :width=200 field="header2" title="列2"  column-index=1 query-mode="group" query="true"> </vue-my-column>
