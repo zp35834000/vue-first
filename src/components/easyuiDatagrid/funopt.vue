@@ -2,15 +2,15 @@
   <div style="display: none;" ></div>
 </template>
 <script>
-import bus from './event'
+
 export default {
-  name: "",
   data: () => ({
 
   }),
   props: {
-    datagridId: {
-      type: String,
+    // 通讯事件中心
+    bus: {
+      type: Object,
       required: true
     },
 		// 显示名称
@@ -37,7 +37,7 @@ export default {
   		icon : this.icon,
   		funname : this.funname
   	};
-    bus.getBusData(this.datagridId,'Bus').$emit('toolbarDataUp',toolbarData);
+    this.bus.$emit('toolbarDataUp',toolbarData);
   }
 }
 </script>

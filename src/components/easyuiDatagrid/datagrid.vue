@@ -6,7 +6,7 @@
   </div>
 </template>
 <script>
-import bus from './event'
+
 import Vue from 'vue'
 import 'easyui/themes/default/easyui.css'
 import 'easyui/themes/icon.css'
@@ -14,44 +14,29 @@ import 'easyui/jquery.easyui.min.js'
 export default {
   data(){
     return {
-
+  		column: [],         // 表格下的列组件集合
+      optFunData: [],     // 表格下的操作组件集合
+      toolbarData: [],    // 工具栏操作集合
+  		queryParams: {},    // 查询参数
+      definedMerges: [],  //
+      mergeRefers: {}
     }
   },
   props: {
-		ifJavaFx:{
-			type:Boolean,
-			default:false
-		},
+    // 通讯事件中心
+    bus: {
+      type: Object,
+      required: true
+    },
 		// 表格唯一标识
 		id:{
 			type: String,
 			required:true
 		},
 		// 取数方法
-		queryFunname:{
-			type : String,
-			required:true
-		},
-		// 查询参数
-		queryParams:{
-			type:Object,
-			default:{
-			}
-		},
-		// 表格下的列组件集合
-		column:{
-			type:Object,
-			default:[]
-		},
-		// 表格下的操作组件集合
-		optFunData:{
-			type : Object,
-			default : []
-		},
-		// 工具栏操作集合
-		toolbarData:{
-			type : Object,
-			default : []
+		queryFunname: {
+			type: String,
+			required: true
 		},
 		// 表格标题
 		title:{
@@ -137,12 +122,9 @@ export default {
 		}
   },
   created() {
-    debugger;
-    bus.addNewBus(this.id);
-    // bus.getBusData(this.id,'queryFunname') = this.queryFunname;
-		// bus.getBusData(this.id,'ifJavaFx') = this.ifJavaFx;
-		bus.getBusData(this.id,'Bus').$on('columnDataUp', (columnData) => { //Bus接收事件
-      let column = bus.getBusData(this.id,'column');
+		this.bus.$on('columnDataUp', (columnData) => { //Bus接收事件
+      // debugger;
+      let column = this.column;
       // 按照columnIndex值将column值放入column数组内的数组中
       if(column[columnData.columnIndex]===undefined){
       	column[columnData.columnIndex] = [];
@@ -150,16 +132,16 @@ export default {
       let length = column[columnData.columnIndex].length;
       column[columnData.columnIndex][length] = columnData;
       if(columnData.mergeRule){
-      	bus.getBusData(this.id,'definedMerges').push(columnData.mergeRule)
+        this.definedMerges.push(columnData.mergeRule);
       }
     });
-		bus.getBusData(this.id,'Bus').$on('funOptDataUp', (funOptData) => { //Bus接收事件
-      let optFunData = bus.getBusData(this.id,'optFunData');
+		this.bus.$on('funOptDataUp', (funOptData) => { //Bus接收事件
+      let optFunData = this.optFunData;
       let length = optFunData.length;
       optFunData[length] = funOptData;
     });
-		bus.getBusData(this.id,'Bus').$on('toolbarDataUp', (toolbarDataRec) => { //Bus接收事件
-			let toolbarData = bus.getBusData(this.id,'toolbarData');
+		this.bus.$on('toolbarDataUp', (toolbarDataRec) => { //Bus接收事件
+			let toolbarData = this.toolbarData;
 			let length = toolbarData.length;
 			toolbarData[length] = toolbarDataRec;
 		});
@@ -170,7 +152,7 @@ export default {
 		queryParams.pageSize = this.pageSize;
 		queryParams.pageNumber = this.pageNumber;
 		queryParams.queryParamsObj = {};
-		// bus.getBusData(this.id,'queryParams') = queryParams;
+    this.queryParams = queryParams;
   },
   mounted() {
     // 初始化操作列
@@ -200,16 +182,16 @@ export default {
   		// 查询参数
   		let queryParams = this.queryParams
   		// 判断是否有query为true的列
-  		for(let i = 0;i<bus.getBusData(this.id,'column').length;i++){
-  			for(let j = 0;j<bus.getBusData(this.id,'column')[i].length;j++){
-  				if(bus.getBusData(this.id,'column')[i][j].query){
+  		for(let i = 0;i<this.column.length;i++){
+  			for(let j = 0;j<this.column[i].length;j++){
+  				if(this.column[i][j].query){
     				queryDivNeeded = true;
     				break;
     			}
   			}
   		}
   		// 判断是否需要添加工具栏
-  		if(bus.getBusData(this.id,'toolbarData').length!=0){
+  		if(this.toolbarData.length!=0){
   			tbDivNeeded = true;
   		}
   		let tbString;
@@ -220,10 +202,10 @@ export default {
   				// 添加queryDiv
   				tbString+='<div name="'+toolbarGridId+'SearchColums">'+
   		 	 		'<input  id="'+toolbarGridId+'_sqlbuilder" name="'+toolbarGridId+'sqlbuilder"   type="hidden" />';
-  				for(let i = 0;i<bus.getBusData(this.id,'column').length;i++){
-  					for(let j = 0;j<bus.getBusData(this.id,'column')[i].length;j++){
-  						if(bus.getBusData(this.id,'column')[i][j].query){
-  							let currentColumn = bus.getBusData(this.id,'column')[i][j];
+  				for(let i = 0;i<this.column.length;i++){
+  					for(let j = 0;j<this.column[i].length;j++){
+  						if(this.column[i][j].query){
+  							let currentColumn = this.column[i][j];
   							tbString+='<span style="display:-moz-inline-box;display:inline-block;">';
   							tbString+='<span style="vertical-align:middle;display:-moz-inline-box;display:inline-block;width: 80px;'+
   							'text-align:right;text-overflow:ellipsis;-o-text-overflow:ellipsis; overflow: hidden;white-space:nowrap;"'+
@@ -259,7 +241,7 @@ export default {
   			if(tbDivNeeded){
   				// 添加工具栏div
   				tbString+='<span style="float:left;" >';
-  				let toolbarDataResource = bus.getBusData(this.id,'toolbarData');
+  				let toolbarDataResource = this.toolbarData;
   				for(let i = 0;i<toolbarDataResource.length;i++){
   					tbString+='<a href="#" class="easyui-linkbutton" plain="true" icon="'+toolbarDataResource[i].icon+'" onclick="'+toolbarDataResource[i].funname+'(\''+toolbarDataResource[i].title+'\',\''+toolbarGridId+'\')">'+toolbarDataResource[i].title+'</a>';
   				}
@@ -293,6 +275,7 @@ export default {
   							});
   							queryParams.queryParamsObj = queryParamsObj;
   							// 查询取数操作
+                this.$emit('showbox',queryParams);
   							window[queryFunname](queryParams);
   						},
   						EnterPress:function(){
@@ -305,7 +288,7 @@ export default {
     },
   	// 初始化表格列属性
   	initColumn(){
-    		let columnData = bus.getBusData(this.id,'column');
+    		let columnData = this.column;
     		let checkbox = this.checkbox;
     		let idField = this.idField;
     		for(let i=0 ; i < columnData.length ; i++){
@@ -358,7 +341,7 @@ export default {
     	},
     	// 增加时间格式化操作
     	addDateFormat(){
-    		let columnData = bus.getBusData(this.id,'column');
+    		let columnData = this.column;
     		for(let i=0 ; i < columnData.length ; i++){
     			for(let j=0; j<columnData[i].length ; j++){
     				if(columnData[i][j].dateFormatter!=undefined&&columnData[i][j].dateFormatter!=''){
@@ -373,7 +356,7 @@ export default {
     	},
     	// 初始化操作列
     	initFunOpt(){
-    		var optFunDataTemp = bus.getBusData(this.id,'optFunData');
+    		var optFunDataTemp = this.optFunData;
     		if(optFunDataTemp.length!=0){
     			let formatter = function(value,rec,index){
     				let optHerf='';
@@ -425,15 +408,15 @@ export default {
     				}
     				return optHerf;
     			}
-    			let funOptTemp = {field:'optField',title:'操作',align:'center',hidden:false,with:'auto',formatter:formatter,rowspan:bus.getBusData(this.id,'column').length};
-    			bus.getBusData(this.id,'column')[0].push(funOptTemp);
+    			let funOptTemp = {field:'optField',title:'操作',align:'center',hidden:false,with:'auto',formatter:formatter,rowspan:this.column.length};
+          this.column[0].push(funOptTemp);
     		}
     	},
     	// 初始化表格数据
     	initGrid(){
     		if(this.treegrid){
     			$("#"+this.id).treegrid({
-    				columns:bus.getBusData(this.id,'column'),
+    				columns:this.column,
     				idField:this.idField,
     				treeField:this.treeField,
     				title:this.title,
@@ -450,12 +433,13 @@ export default {
     				checkOnSelect:this.checkOnSelect
     			});
     		}else{
-    			let definedMerges = bus.getBusData(this.id,'definedMerges');
+          debugger;
+    			let definedMerges = this.definedMerges;
     			let autoMergeField = this.autoMergeField;
     			let optMergeRule = this.optMergeRule;
-    			let mergeRefers = bus.getBusData(this.id,'mergeRefers');
+    			let mergeRefers = this.mergeRefers;
     			$("#"+this.id).datagrid({
-    				columns:bus.getBusData(this.id,'column'),
+    				columns:this.column,
     				idField:this.idField,
     				title:this.title,
     				pagination:this.pagination,

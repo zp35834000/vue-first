@@ -2,7 +2,7 @@
   <div style="display: none;" ></div>
 </template>
 <script>
-import bus from './event'
+
 export default {
   data(){
     return {
@@ -10,6 +10,11 @@ export default {
     }
   },
   props: {
+    // 通讯事件中心
+    bus: {
+      type: Object,
+      required: true
+    },
     datagridId: {
       type: String,
       required: true
@@ -84,7 +89,7 @@ export default {
 			default:''
 		}
   },
-  created() {
+  mounted() {
     let columnData = {
       field : this.field,
       title : this.title,
@@ -107,9 +112,9 @@ export default {
         bus.getBusData(this.datagridId,'mergeRefers')[this.referMergeField].push(this.field);
       }
     }
-    bus.getBusData(this.datagridId,'Bus').$emit('columnDataUp',columnData);
+    this.bus.$emit('columnDataUp',columnData);
   },
-  mounted() {
+  created() {
   }
 }
 </script>

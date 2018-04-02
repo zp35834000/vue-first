@@ -1,12 +1,12 @@
 <template>
   <div>
-    <vue-my-datagrid  opt-merge-rule='header1' :auto-merge-field=["header2"] :id="datagrid" title="测试表格" :checkbox=true  id-field="header1" query-funname="initDatagrid3" :if-java-fx=true :check-on-select="false">
-      <vue-my-column :datagrid-id='datagrid' title="<a href='#' onclick='openDetailedEchart(123,cpu)'>和并列</a>"  column-index=0 colspan=2></vue-my-column>
-      <vue-my-column :datagrid-id='datagrid' :width=300 :merge-rule={index:0,field:'header1',rowspan:4} field="header1" title="列1" width="180" column-index=1 replace="001_new001,003_new003"  query="true"></vue-my-column>
-      <vue-my-column :datagrid-id='datagrid' :width=200 field="header2" title="列2"  column-index=1 query-mode="group" query="true"> </vue-my-column>
-      <vue-my-funopt :datagrid-id='datagrid' title="header1为003" funname="funOptTest1(header1,header2)" exp='header1#eq#003'></vue-my-funopt>
-      <vue-my-funopt :datagrid-id='datagrid' title="alert header2" funname="funOptTest2(header2)" exp=''></vue-my-funopt>
-      <vue-my-toolbar :datagrid-id='datagrid' title="表格工具栏" funname="datagridTbTest" ></vue-my-toolbar>
+    <vue-my-datagrid :bus='bus' opt-merge-rule="header1"  id="test" title="测试表格" :checkbox=false  id-field="header1" query-funname="initDatagrid3" :if-java-fx=true :check-on-select=false>
+      <vue-my-column :bus='bus' title="<a href='#' @onclick='openDetailedEchart(123,cpu)'>和并列</a>"  column-index=0 colspan=2></vue-my-column>
+      <vue-my-column :bus='bus'  :width=300  field="header1" title="列1" width="180" column-index=1 replace="001_new001,003_new003"  query="true"></vue-my-column>
+      <vue-my-column :bus='bus'  :width=200 field="header2" title="列2"  column-index=1 query-mode="group" query="true"> </vue-my-column>
+      <vue-my-funopt  :bus='bus' title="header1为003" funname="funOptTest1(header1,header2)" exp='header1#eq#003'></vue-my-funopt>
+      <vue-my-funopt  :bus='bus' title="alert header2" funname="funOptTest2(header2)" exp=''></vue-my-funopt>
+      <vue-my-toolbar :bus='bus' title="表格工具栏" funname="datagridTbTest" ></vue-my-toolbar>
     </vue-my-datagrid>
   </div>
 </template>
@@ -16,7 +16,7 @@ import Vue from 'vue'
 export default {
   data(){
     return {
-      datagrid: 'test',
+      bus: new Vue()
     }
   },
   components: {
@@ -49,7 +49,10 @@ export default {
   		};
   		$('#test').datagrid('loadData', testJson);
   		return '345';
-  	}
+  	},
+    openDetailedEchart() {
+      alert('echartTest');
+    }
   }
 }
 </script>
