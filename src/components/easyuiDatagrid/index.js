@@ -1,3 +1,5 @@
 import datagrid from './datagrid'
 import column from './column'
-export {datagrid,column}
+import funopt from './funopt'
+import toolbar from './toolbar'
+export {datagrid,column,funopt,toolbar}
