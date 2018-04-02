@@ -256,6 +256,7 @@ export default {
   			}
   			tbString += '</div></div>';
   			$("#"+toolbarGridId).append(tbString);
+        let _this = this;
   			if(queryDivNeeded){
   				// 为查询、重置按钮添加vue组件
   				new Vue({
@@ -275,8 +276,8 @@ export default {
   							});
   							queryParams.queryParamsObj = queryParamsObj;
   							// 查询取数操作
-                this.$emit('showbox',queryParams);
-  							window[queryFunname](queryParams);
+                _this.$emit('showbox',queryParams);
+  							// window[queryFunname](queryParams);
   						},
   						EnterPress:function(){
   		 	 			  this.listsearch(toolbarGridId);
@@ -433,7 +434,6 @@ export default {
     				checkOnSelect:this.checkOnSelect
     			});
     		}else{
-          debugger;
     			let definedMerges = this.definedMerges;
     			let autoMergeField = this.autoMergeField;
     			let optMergeRule = this.optMergeRule;
