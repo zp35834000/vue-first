@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height:100%">
     <vue-my-datagrid :bus='bus' @showbox='initDatagrid3' opt-merge-rule="header1"  id="test" title="测试表格" :checkbox=false  id-field="header1" query-funname="initDatagrid3" :if-java-fx=true :check-on-select=false>
       <!-- <vue-my-column :bus='bus' title="<a href='#' @onclick='openDetailedEchart(123,cpu)'>和并列</a>"  column-index=0 colspan=2></vue-my-column> -->
       <vue-my-column :bus='bus'  :width=300  field="header1" title="列1" width="180" column-index=0 replace="001_new001,003_new003"  query="true"></vue-my-column>
@@ -27,6 +27,7 @@ export default {
   },
   methods: {
     initDatagrid3(queryParams){
+      debugger;
   		let queryParamObj = queryParams.queryParamsObj;
   		let pageSize = queryParams.pageSize;
   		let pageNumber = queryParams.pageNumber;

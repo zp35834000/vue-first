@@ -13,15 +13,15 @@ export default {
       type: Object,
       required: true
     },
-		// 显示名称
+    // 操作名称
 		title:{
 			type:String,
 			required:true
 		},
-		// 按钮图标
-		icon:{
+		// 判断操作是否显示
+		exp:{
 			type:String,
-			default : 'icon-edit'
+			default : ''
 		},
 		// 操作点击触发事件
 		funname:{
@@ -32,12 +32,12 @@ export default {
   methods:{
   },
   created(){
-  	let toolbarData = {
-  		title : this.title,
-  		icon : this.icon,
-  		funname : this.funname
+    let funOptData = {
+			title : this.title,
+			exp : this.exp,
+			funname : this.funname
   	};
-    this.bus.$emit('toolbarDataUp',toolbarData);
+    this.bus.$emit('funOptDataUp',funOptData);
   }
 }
 </script>

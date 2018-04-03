@@ -250,8 +250,8 @@ export default {
   			if(queryDivNeeded){
   				// 添加查询、重置按钮
   				tbString+='<span id="'+toolbarGridId+'clickButtonDiv" style="float:right">'+
-  	    				'<a href="#" class="easyui-linkbutton" iconCls="icon-search" @click="listsearch(\''+toolbarGridId+'\')">查询</a>'+
-  	    				'<a href="#" class="easyui-linkbutton" iconCls="icon-reload" @click="searchReset(\''+toolbarGridId+'\')">重置</a>'+
+  	    				'<a  class="easyui-linkbutton" iconCls="icon-search" @click="listsearch(\''+toolbarGridId+'\')">查询</a>'+
+  	    				'<a  class="easyui-linkbutton" iconCls="icon-reload" @click="searchReset(\''+toolbarGridId+'\')">重置</a>'+
   	    			  '</span>';
   			}
   			tbString += '</div></div>';
@@ -357,6 +357,7 @@ export default {
     	},
     	// 初始化操作列
     	initFunOpt(){
+        // debugger;
     		var optFunDataTemp = this.optFunData;
     		if(optFunDataTemp.length!=0){
     			let formatter = function(value,rec,index){
@@ -438,7 +439,8 @@ export default {
     			let autoMergeField = this.autoMergeField;
     			let optMergeRule = this.optMergeRule;
     			let mergeRefers = this.mergeRefers;
-    			$("#"+this.id).datagrid({
+          console.log(this.column);
+          $("#"+this.id).datagrid({
     				columns:this.column,
     				idField:this.idField,
     				title:this.title,
