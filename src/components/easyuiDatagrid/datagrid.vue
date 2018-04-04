@@ -106,9 +106,9 @@ export default {
 			default:false
 		},
 		// 需要合并相同值的列明
-		autoMergeField:{
-			type:Object,
-			default:[]
+		autoMergeField: {
+			type: Array,
+			default: []
 		},
 		// 是否需要合并操作列
 		optMergeRule:{
@@ -117,6 +117,15 @@ export default {
 		}
   },
   created() {
+    this.bus.$on('mergeDataUp',mergeRefers =>{
+      let referMergeField = mergeRefers[0];
+      let field = mergeRefers[1];
+      if((this.mergeRefers)[referMergeField]===undefined) {
+        this.mergeRefers[this.referMergeField] = [field];
+      }else{
+        this.mergeRefers[this.referMergeField].push(field);
+      }
+    });
 		this.bus.$on('columnDataUp', (columnData) => { //Bus接收事件
       // debugger;
       let column = this.column;
@@ -450,7 +459,6 @@ export default {
     				sortOrder:this.sortOrder,
     				singleSelect:this.singleSelect,
     				striped:this.striped,
-    				fit:true,
     				checkOnSelect:this.checkOnSelect,
     				onLoadSuccess: function(data){
               //data是默认的表格加载数据，包括rows和Total

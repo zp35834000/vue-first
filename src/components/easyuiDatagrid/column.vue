@@ -15,10 +15,6 @@ export default {
       type: Object,
       required: true
     },
-    datagridId: {
-      type: String,
-      required: true
-    },
     // 列显示值
 		title:{
 			type:String,
@@ -106,11 +102,8 @@ export default {
       dateFormatter : this.dateFormatter
     };
     if(this.referMergeField!==''){
-      if(bus.getBusData(this.datagridId,'mergeRefers')[this.referMergeField]===undefined){
-        bus.getBusData(this.datagridId,'mergeRefers')[this.referMergeField] = [this.field];
-      }else{
-        bus.getBusData(this.datagridId,'mergeRefers')[this.referMergeField].push(this.field);
-      }
+      let mergeRefers = [this.referMergeField,this.field];
+      this.bus.$emit('mergeDataUp',mergeRefers);
     }
     this.bus.$emit('columnDataUp',columnData);
   },
