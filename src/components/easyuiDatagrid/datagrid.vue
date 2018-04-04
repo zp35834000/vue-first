@@ -8,6 +8,7 @@
 <script>
 
 import Vue from 'vue'
+import './dateUtil'
 import 'easyui/themes/default/easyui.css'
 import 'easyui/themes/icon.css'
 import 'easyui/jquery.easyui.min.js'
@@ -293,6 +294,9 @@ export default {
     initDetagridData:function(){
       this.$emit('initData',this.queryParams);
     },
+    funOptTest2(header2){
+      alert(header2);
+    },
   	// 初始化表格列属性
   	initColumn(){
     		let columnData = this.column;
@@ -398,7 +402,7 @@ export default {
     					};
     					if(ifAdd){
     						// 解析js函数
-    						optHerf+="[<a href='#' onclick=";
+    						optHerf+="[<a href='#/datagrid' @click=";
     						let funStrArr = currentFunOpt.funname.split("(");
     						optHerf+=funStrArr[0]+"(";
     						// 解析js函数中的参数
@@ -437,7 +441,6 @@ export default {
     				sortOrder:this.sortOrder,
     				singleSelect:this.singleSelect,
     				striped:this.striped,
-    				fit:true,
     				checkOnSelect:this.checkOnSelect
     			});
     		}else{
@@ -445,7 +448,6 @@ export default {
     			let autoMergeField = this.autoMergeField;
     			let optMergeRule = this.optMergeRule;
     			let mergeRefers = this.mergeRefers;
-          console.log(this.column);
           $("#"+this.id).datagrid({
     				columns:this.column,
     				idField:this.idField,
