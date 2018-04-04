@@ -33,11 +33,6 @@ export default {
 			type: String,
 			required:true
 		},
-		// 取数方法
-		queryFunname: {
-			type: String,
-			required: true
-		},
 		// 表格标题
 		title:{
 			type:String,
@@ -166,7 +161,7 @@ export default {
   	// 表格初始化
   	this.initGrid();
     // 表格数据上数
-
+    this.initDetagridData();
   },
   methods: {
     // 初始化toolbar
@@ -177,8 +172,6 @@ export default {
   		let queryDivNeeded = false;
   		// 是否需要添加toolbardiv
   		let tbDivNeeded = false;
-  		// 取数方法名称
-  		let queryFunname = this.queryFunname;
   		// 查询参数
   		let queryParams = this.queryParams
   		// 判断是否有query为true的列
@@ -262,8 +255,9 @@ export default {
   				new Vue({
   					el : '#'+toolbarGridId+'tb',
   					methods:{
-  						// 重置输入框
+  						//重置输入框
   						searchReset:function(name){
+                debugger;
   							$("#"+toolbarGridId+"tb").find(":input").val("");
   							this.listsearch(toolbarGridId);
   						},
@@ -276,8 +270,7 @@ export default {
   							});
   							queryParams.queryParamsObj = queryParamsObj;
   							// 查询取数操作
-                _this.$emit('showbox',queryParams);
-  							// window[queryFunname](queryParams);
+                _this.$emit('initData',queryParams);
   						},
   						EnterPress:function(){
   		 	 			  this.listsearch(toolbarGridId);
@@ -286,6 +279,10 @@ export default {
   				})
   			}
   		}
+    },
+    // 初始化表格数据
+    initDetagridData:function(){
+      this.$emit('initData',this.queryParams);
     },
   	// 初始化表格列属性
   	initColumn(){
