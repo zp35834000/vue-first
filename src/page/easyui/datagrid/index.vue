@@ -36,7 +36,7 @@ export default {
   		let testJson = {
   				"total":total,
   				"rows" : [
-  					{"header1":"001,002,003","header2":new Date().getTime()},
+  					{"header1":"001,002,0031","header2":new Date().getTime()},
   					{"header1":"003","header2":new Date().getTime()},
   					{"header1":"004","header2":new Date().getTime()},
   					{"header1":"005","header2":new Date().getTime()},
