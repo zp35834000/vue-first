@@ -30,6 +30,10 @@ export default new Router({
         path: '/score',
         component: r => require.ensure([], () => r(require('../page/score')), 'score')
       }]
+    },
+    {
+      path: '/simpleDatagrid',
+      component: r => require.ensure([], () => r(require('../page/simpleDatagrid/datagrid')), 'simpleDatagrid')
     }
   ]
 })

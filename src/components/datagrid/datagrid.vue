@@ -1,27 +1,32 @@
 <template>
-  <div id="">
+  <div>
     <table :id='id' border="0" style="float:left">
-      
+      <column :column-info='columnData'></column>
     </table>
   </div>
 </template>
 <script>
+import column from './column'
 export default {
-  name: "",
   data: () => ({
 
   }),
+  components: {
+    column
+  },
   props: {
-    // 事件中心
-    bus: {
-      type: Object,
-      required: true
-    },
     // 表格唯一标识
     id: {
       type: String,
       required: true
+    },
+    columnData: {
+      type: Array,
+      required: true
     }
+  },
+  computed: {
+
   }
 }
 </script>
