@@ -1,15 +1,28 @@
 <template>
   <div>
     <table :id='id' border="0" style="float:left">
-      <column :column-info='columnData'></column>
+      <column :show-data='showData' :id='id' :column-info='columnData'></column>
     </table>
+    <div class="" style="float:left">
+      <div id="" style="height:29px">
+      </div>
+      <div v-show='showScroll' :id="id+'divScroll'" :style="{height:itemSize*showNum+'px'}"
+        style="width:19px;overflowY:scroll;overflowX:hidden"
+        @scroll='getScrollPos'>
+        <div class="" :style="{height:itemSize*data.length+'px'}"
+          style="backgroundColor:white;width:1px;height:1040px">
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import column from './column'
 export default {
   data: () => ({
-
+    pos: 0, // 当前滚动位置
+    itemSize: 26, //单项尺寸
+    // showData: [] //需要展示的数据
   }),
   components: {
     column
@@ -20,13 +33,47 @@ export default {
       type: String,
       required: true
     },
+    // 表格列信息
     columnData: {
       type: Array,
       required: true
+    },
+    // 所有数据信息
+    data: {
+      type: Array,
+      required: true
+    },
+    // 展示数据个数
+    showNum: {
+      type: Number,
+      default: 20
     }
   },
   computed: {
+    showScroll(){
+      if(this.data.length>this.showNum){
+        return true;
+      }else{
+        return false;
+      }
+    },
+    // 需要展示的数据
+    showData(){
+      let showDataArray = [];
+      for(let i = 0; i < this.showNum; i++){
+        showDataArray[i] = this.data[this.pos+i];
+      }
+      return showDataArray;
+    }
 
+  },
+  methods: {
+    // 获得滚动位置
+    getScrollPos(){
+      let top = document.getElementById(this.id+'divScroll').scrollTop;
+      let pos = parseInt(top/this.itemSize);
+      this.pos = pos;
+    }
   }
 }
 </script>

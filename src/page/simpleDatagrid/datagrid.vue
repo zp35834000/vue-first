@@ -1,19 +1,36 @@
 <template>
-  <datagrid :id='' :column-data=''></datagrid>
+  <datagrid :show-num=10 :data='dataList' :id='id' :column-data='columnData'></datagrid>
 </template>
 <script>
 import datagrid from '../../components/datagrid/datagrid'
 export default {
-  data: () => ({
-    id: 'test',
-    columnData: [{
-      title: 'ID',
-      field: 'id'
-    },{
-      title: '名称',
-      field: 'text'
-    }]
-  })
+  data(){
+    return {
+      id: 'test',
+      columnData: [{
+        title: 'ID',
+        field: 'id'
+      },{
+        title: '名称',
+        field: 'text'
+      }]
+    }
+  },
+  components: {
+    datagrid
+  },
+  computed: {
+    dataList(){
+      let dataList = [];
+      for (var i = 0; i < 100000; i++) {
+        dataList[i] = {
+          id: i,
+          text: 'text'+i
+        }
+      }
+      return dataList;
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
