@@ -1,5 +1,5 @@
 <template>
-  <datagrid :show-num=10 :data='dataList' :id='id' :column-data='columnData'></datagrid>
+  <datagrid :show-num=20 :data='dataList' :id='id' :column-data='columnData'></datagrid>
 </template>
 <script>
 import datagrid from '../../components/datagrid/datagrid'
@@ -22,7 +22,7 @@ export default {
   computed: {
     dataList(){
       let dataList = [];
-      for (var i = 0; i < 100000; i++) {
+      for (var i = 0; i < 21; i++) {
         dataList[i] = {
           id: i,
           text: 'text'+i

@@ -4,9 +4,9 @@
       <column :show-data='showData' :id='id' :column-info='columnData'></column>
     </table>
     <div class="" style="float:left">
-      <div id="" style="height:29px">
+      <div id="" style="height:25px">
       </div>
-      <div v-show='showScroll' :id="id+'divScroll'" :style="{height:itemSize*showNum+'px'}"
+      <div v-if='showScroll' :id="id+'divScroll'" :style="{height:itemSize*showNum+'px'}"
         style="width:19px;overflowY:scroll;overflowX:hidden"
         @scroll='getScrollPos'>
         <div class="" :style="{height:itemSize*data.length+'px'}"
@@ -20,9 +20,8 @@
 import column from './column'
 export default {
   data: () => ({
-    pos: 0, // 当前滚动位置
-    itemSize: 26, //单项尺寸
-    // showData: [] //需要展示的数据
+    itemSize: 22, //单项尺寸
+    pos: 0 // 当前滚动位置
   }),
   components: {
     column
@@ -50,6 +49,7 @@ export default {
     }
   },
   computed: {
+    // 是否显示滚动条
     showScroll(){
       if(this.data.length>this.showNum){
         return true;
@@ -60,7 +60,12 @@ export default {
     // 需要展示的数据
     showData(){
       let showDataArray = [];
-      for(let i = 0; i < this.showNum; i++){
+      let showNum = this.showNum;
+      let totalNum = this.data.length;
+      if(totalNum<showNum){
+        showNum = totalNum;
+      }
+      for(let i = 0; i < showNum; i++){
         showDataArray[i] = this.data[this.pos+i];
       }
       return showDataArray;
