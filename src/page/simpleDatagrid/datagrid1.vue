@@ -12,13 +12,11 @@ export default {
       columnData: [{
         title: 'ID',
         field: 'id',
-        sortable: true,
-        sort: ''
+        sortable: true
       },{
         title: '名称',
         field: 'text',
-        sortable: true,
-        sort: 'desc'
+        sortable: true
       }],
       sortRule: ['id','asc']
     }

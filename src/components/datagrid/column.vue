@@ -47,7 +47,7 @@ export default {
       type: Array,
       required: true
     },
-    // 排序规则，0为field，1为asc或desc
+    // 默认排序规则，0为field，1为asc或desc
     sortRule: {
       type: Array
     }
@@ -60,11 +60,21 @@ export default {
   methods: {
     // 点击向上箭头，向上箭头变色，并将该列数据从小到大排列
     upArrowSelect(info) {
-      this.sortRuleString = info.field+'asc'
+      this.sortRuleString = info.field+'asc';
+      this.dataSortRuleUp(info.field,'asc');
     },
     // 点击向下箭头，向下箭头变色，并将该列数据从大到小排列
     downArrowSelect(info) {
-      this.sortRuleString = info.field+'desc'
+      this.sortRuleString = info.field+'desc';
+      this.dataSortRuleUp(info.field,'desc');
+    },
+    // 将排序规则传递到父组件，将数据进行重新排序
+    dataSortRuleUp(field,sortOrder) {
+      let sortRule = {
+        field: field,
+        sort: sortOrder
+      };
+      this.$emit('dataSortRuleUp',sortRule);
     },
     // 初始化排序规则字符
     initSortRuleString() {

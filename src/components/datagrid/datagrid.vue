@@ -1,7 +1,7 @@
 <template>
   <div>
     <table class='hovertable' :id='id' border="0" style="float:left" >
-      <column :sort-rule='sortRule' :show-data='showData' :id='id' :column-info='actualColumnData'></column>
+      <column @dataSortRuleUp='orderData' :sort-rule='sortRule' :show-data='showData' :id='id' :column-info='actualColumnData'></column>
     </table>
     <div class="" style="float:left">
       <div id="" style="height:32px">
@@ -19,6 +19,7 @@
 <script>
 import column from './column'
 export default {
+  name: 'datagrid',
   data: () => ({
     itemSize: 31, //单项尺寸
     pos: 0 // 当前滚动位置
@@ -87,6 +88,9 @@ export default {
       let top = document.getElementById(this.id+'divScroll').scrollTop;
       let pos = parseInt(top/this.itemSize);
       this.pos = pos;
+    },
+    orderData(orderRule) {
+      console.log(orderRule);
     }
   }
 }
