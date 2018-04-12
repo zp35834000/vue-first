@@ -1,16 +1,16 @@
 <template>
   <div>
-    <table :id='id' border="0" style="float:left">
-      <column :show-data='showData' :id='id' :column-info='columnData'></column>
+    <table class='hovertable' :id='id' border="0" style="float:left" >
+      <column :sort-rule='sortRule' :show-data='showData' :id='id' :column-info='actualColumnData'></column>
     </table>
     <div class="" style="float:left">
-      <div id="" style="height:25px">
+      <div id="" style="height:32px">
       </div>
       <div v-if='showScroll' :id="id+'divScroll'" :style="{height:itemSize*showNum+'px'}"
         style="width:19px;overflowY:scroll;overflowX:hidden"
         @scroll='getScrollPos'>
         <div class="" :style="{height:itemSize*data.length+'px'}"
-          style="backgroundColor:white;width:1px;height:1040px">
+          style="backgroundColor:white;width:1px">
         </div>
       </div>
     </div>
@@ -20,7 +20,7 @@
 import column from './column'
 export default {
   data: () => ({
-    itemSize: 22, //单项尺寸
+    itemSize: 31, //单项尺寸
     pos: 0 // 当前滚动位置
   }),
   components: {
@@ -46,6 +46,13 @@ export default {
     showNum: {
       type: Number,
       default: 20
+    },
+    // 排序规则，0为field，1为asc或desc
+    sortRule: {
+      type: Array,
+      default: function() {
+        return [];
+      }
     }
   },
   computed: {
@@ -69,8 +76,10 @@ export default {
         showDataArray[i] = this.data[this.pos+i];
       }
       return showDataArray;
+    },
+    actualColumnData(){
+      return this.columnData;
     }
-
   },
   methods: {
     // 获得滚动位置
@@ -82,5 +91,15 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="css" scoped>
+
+.hovertable {
+    font-family: verdana,arial,sans-serif;
+    font-size:11px;
+    color:#333333;
+    border-width: 1px;
+    border-color: #999999;
+    border-collapse: collapse;
+}
+
 </style>

@@ -12,8 +12,8 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path: '/datagrid',
-      component: r => require.ensure([], () => r(require('../page/easyui/datagrid')), 'datagrid')
+      path: '/easyuiDatagrid',
+      component: r => require.ensure([], () => r(require('../page/easyui/datagrid')), 'easyuiDatagrid')
     },
     {
       path: '/',
@@ -32,8 +32,8 @@ export default new Router({
       }]
     },
     {
-      path: '/simpleDatagrid',
-      component: r => require.ensure([], () => r(require('../page/simpleDatagrid/datagrid')), 'simpleDatagrid')
+      path: '/datagrid',
+      component: r => require.ensure([], () => r(require('../page/simpleDatagrid/datagrid1')), 'datagrid')
     }
   ]
 })
