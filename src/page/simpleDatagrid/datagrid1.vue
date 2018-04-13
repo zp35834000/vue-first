@@ -32,7 +32,7 @@ export default {
   methods: {
     getData() {
       let dataList = [];
-      for (var i = 0; i < 21000; i++) {
+      for (var i = 0; i < 10000; i++) {
         dataList[i] = {
           id: i,
           text: 'text'+i

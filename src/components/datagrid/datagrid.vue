@@ -1,15 +1,23 @@
 <template>
   <div>
     <table class='hovertable' :id='id' border="0" style="float:left" >
-      <column @dataSortRuleUp='orderData' :sort-rule='sortRule' :show-data='showData' :id='id' :column-info='actualColumnData'></column>
+      <column
+        @dataSortRuleUp='orderData'
+        :sort-rule='sortRule'
+        :show-data='showData'
+        :id='id'
+        :column-info='actualColumnData'></column>
     </table>
     <div class="" style="float:left">
       <div id="" style="height:32px">
       </div>
-      <div v-if='showScroll' :id="id+'divScroll'" :style="{height:itemSize*showNum+'px'}"
+      <div v-if='showScroll'
+        :id="id+'divScroll'"
+        :style="{height:itemSize*showNum+'px'}"
         style="width:19px;overflowY:scroll;overflowX:hidden"
         @scroll='getScrollPos'>
-        <div class="" :style="{height:itemSize*data.length+'px'}"
+        <div class=""
+          :style="{height:itemSize*data.length+'px'}"
           style="backgroundColor:white;width:1px">
         </div>
       </div>
@@ -18,11 +26,13 @@
 </template>
 <script>
 import column from './column'
+
 export default {
   name: 'datagrid',
   data: () => ({
     itemSize: 31, //单项尺寸
-    pos: 0 // 当前滚动位置
+    pos: 0, // 当前滚动位置
+    orderedData: []
   }),
   components: {
     column
@@ -56,6 +66,11 @@ export default {
       }
     }
   },
+  mounted() {
+  },
+  created() {
+    this.initOrderedData();
+  },
   computed: {
     // 是否显示滚动条
     showScroll(){
@@ -74,7 +89,7 @@ export default {
         showNum = totalNum;
       }
       for(let i = 0; i < showNum; i++){
-        showDataArray[i] = this.data[this.pos+i];
+        showDataArray[i] = this.orderedData[this.pos+i];
       }
       return showDataArray;
     },
@@ -90,7 +105,35 @@ export default {
       this.pos = pos;
     },
     orderData(orderRule) {
-      console.log(orderRule);
+      // 比较规则函数
+      function compare(property,sort) {
+        // 默认
+        let rev = 1;
+        if(sort === 'asc'){
+          rev = 1;
+        }else if(sort === 'desc'){
+          rev = -1;
+        }
+        return function (a,b){
+          let val1 = a[property];
+          let val2 = b[property];
+          if(val1 < val2) {
+            return rev * -1;
+          }
+          if(val1 > val2) {
+            return rev * 1;
+          }
+          return 0;
+        }
+      }
+      this.orderedData = this.data.sort(compare('id',orderRule.sort));
+      if(document.getElementById(this.id+'divScroll')!==null){
+        document.getElementById(this.id+'divScroll').scrollTop = 0;
+
+      }
+    },
+    initOrderedData() {
+      this.orderedData = this.data;
     }
   }
 }
