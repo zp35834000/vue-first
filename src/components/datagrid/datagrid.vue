@@ -6,7 +6,7 @@
         :sort-rule='sortRule'
         :show-data='showData'
         :id='id'
-        :column-info='actualColumnData'></column>
+        :column-info='columnData'></column>
     </table>
     <div class="" style="float:left">
       <div id="" style="height:32px">
@@ -32,7 +32,8 @@ export default {
   data: () => ({
     itemSize: 31, //单项尺寸
     pos: 0, // 当前滚动位置
-    orderedData: []
+    orderedData: [],
+    dataOrderMonotirNumber: 0
   }),
   components: {
     column
@@ -82,6 +83,7 @@ export default {
     },
     // 需要展示的数据
     showData(){
+      let dataOrderMonotirNumber = this.dataOrderMonotirNumber;
       let showDataArray = [];
       let showNum = this.showNum;
       let totalNum = this.data.length;
@@ -89,12 +91,9 @@ export default {
         showNum = totalNum;
       }
       for(let i = 0; i < showNum; i++){
-        showDataArray[i] = this.orderedData[this.pos+i];
+        showDataArray[i] = this.data[this.pos+i];
       }
       return showDataArray;
-    },
-    actualColumnData(){
-      return this.columnData;
     }
   },
   methods: {
@@ -126,10 +125,10 @@ export default {
           return 0;
         }
       }
-      this.orderedData = this.data.sort(compare('id',orderRule.sort));
+      this.data.sort(compare(orderRule.field,orderRule.sort));
+      this.dataOrderMonotirNumber++;
       if(document.getElementById(this.id+'divScroll')!==null){
         document.getElementById(this.id+'divScroll').scrollTop = 0;
-
       }
     },
     initOrderedData() {

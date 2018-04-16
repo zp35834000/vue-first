@@ -7,11 +7,11 @@
           {{info.title}}&nbsp&nbsp&nbsp
           <div v-if='info.sortable===true' style="float:right">
             <div class="arrow-up"
-              :class="{arrowUpSelect:sortRuleString===info.field+'asc'}"
+              :class="{arrowUpSelect:sortRuleString===info.field+',asc'}"
               @click='upArrowSelect(info)'></div>
             <div style="height:2px"></div>
             <div class="arrow-down"
-              :class="{arrowDownSelect:sortRuleString===info.field+'desc'}"
+              :class="{arrowDownSelect:sortRuleString===info.field+',desc'}"
               @click='downArrowSelect(info)'
             ></div>
           </div>
@@ -29,7 +29,8 @@
 <script>
 export default {
   data: () => ({
-    sortRuleString: ''
+    sortRuleString: '',
+    sortNeeded: true
   }),
   props: {
     // 列信息
@@ -60,26 +61,35 @@ export default {
   methods: {
     // 点击向上箭头，向上箭头变色，并将该列数据从小到大排列
     upArrowSelect(info) {
-      this.sortRuleString = info.field+'asc';
       this.dataSortRuleUp(info.field,'asc');
     },
     // 点击向下箭头，向下箭头变色，并将该列数据从大到小排列
     downArrowSelect(info) {
-      this.sortRuleString = info.field+'desc';
       this.dataSortRuleUp(info.field,'desc');
     },
     // 将排序规则传递到父组件，将数据进行重新排序
     dataSortRuleUp(field,sortOrder) {
-      let sortRule = {
-        field: field,
-        sort: sortOrder
-      };
-      this.$emit('dataSortRuleUp',sortRule);
+      // 对比比较规则，如果比较规则有变化，则触发事件，进行排序
+      let sortArr = this.sortRuleString.split(',');
+      if(sortArr[0]===field && sortArr[1]===sortOrder){
+        this.sortNeeded = false;
+      }
+      if(sortArr[0]!==field || sortArr[1]!==sortOrder){
+        this.sortNeeded = true;
+      }
+      if(this.sortNeeded){
+        this.sortRuleString = field+','+sortOrder;
+        let sortRule = {
+          field: field,
+          sort: sortOrder
+        };
+        this.$emit('dataSortRuleUp',sortRule);
+      }
     },
     // 初始化排序规则字符
     initSortRuleString() {
       if(this.sortRule !== undefined && this.sortRule.length !== 0){
-        this.sortRuleString = this.sortRule[0]+this.sortRule[1];
+        this.sortRuleString = this.sortRule[0]+','+this.sortRule[1];
       }
     }
   },
