@@ -1,15 +1,20 @@
 <template>
   <div>
+    <toolbar
+      v-if='toolbarNeeded'
+      :toolbar-query-data='toolbarQueryData'>
+    </toolbar>
     <table class='hovertable' :id='id' border="0" style="float:left" >
       <column
         @dataSortRuleUp='orderData'
         :sort-rule='sortRule'
         :show-data='showData'
         :id='id'
-        :column-info='columnData'></column>
+        :column-info='columnData'>
+      </column>
     </table>
     <div class="" style="float:left">
-      <div id="" style="height:32px">
+      <div id="" style="height:34px">
       </div>
       <div v-if='showScroll'
         :id="id+'divScroll'"
@@ -26,17 +31,24 @@
 </template>
 <script>
 import column from './column'
+import toolbar from './toolbar'
+import Vue from 'vue';
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+Vue.use(iView);
+
 
 export default {
   name: 'datagrid',
   data: () => ({
-    itemSize: 31, //单项尺寸
+    itemSize: 35, //单项尺寸
     pos: 0, // 当前滚动位置
     orderedData: [],
     dataOrderMonotirNumber: 0
   }),
   components: {
-    column
+    column,
+    toolbar
   },
   props: {
     // 表格唯一标识
@@ -94,6 +106,25 @@ export default {
         showDataArray[i] = this.data[this.pos+i];
       }
       return showDataArray;
+    },
+    // 获得toolbar查询相关数据
+    toolbarQueryData() {
+      let toolbarQueryData = [];
+      for (var i = 0; i < this.columnData.length; i++) {
+        if(this.columnData[i].query === true){
+          toolbarQueryData.push(this.columnData[i]);
+        }
+      }
+      console.log(toolbarQueryData.length);
+      return toolbarQueryData;
+    },
+    // 是否需要toolbar
+    toolbarNeeded() {
+      let toolbarNeeded = false;
+      if(this.toolbarQueryData.length !== 0) {
+        toolbarNeeded = true
+      }
+      return toolbarNeeded;
     }
   },
   methods: {

@@ -12,11 +12,29 @@ export default {
       columnData: [{
         title: 'ID',
         field: 'id',
-        sortable: true
+        sortable: true,
+        query: true,
+        queryArugs: {
+          tag: 'input',
+          condition: '111'
+        }
       },{
         title: '名称',
         field: 'text',
-        sortable: true
+        sortable: true,
+        query: true,
+        queryArugs: {
+          tag: 'select',
+          condition: 'London',
+          options: [{
+                        value: 'New York',
+                        label: '纽约'
+                    },
+                    {
+                        value: 'London',
+                        label: '伦敦'
+                    }]
+        }
       }],
       sortRule: ['id','asc']
     }
