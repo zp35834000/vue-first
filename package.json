@@ -11,7 +11,8 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "datagridBuild": "cross-env NODE_ENV=production webpack --progress --hide-modules --config build/webpack.datagrid.conf.js"
   },
   "dependencies": {
     "array-includes": "^3.0.3",
@@ -38,6 +39,7 @@
     "chromedriver": "^2.27.2",
     "copy-webpack-plugin": "^4.0.1",
     "cross-spawn": "^5.0.1",
+    "cross-env": "^5.0.5",
     "css-loader": "^0.28.0",
     "eslint": "^4.15.0",
     "eslint-config-standard": "^10.2.1",
