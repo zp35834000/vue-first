@@ -36,6 +36,7 @@ import toolbar from './toolbar'
 import Vue from 'vue';
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+import arrUtil from '../util/arrUtils'
 Vue.use(iView);
 
 
@@ -155,28 +156,7 @@ export default {
     },
     // 对originalData进行排序操作
     orderData(orderRule) {
-      // 比较规则函数
-      function compare(property,sort) {
-        // 默认
-        let rev = 1;
-        if(sort === 'asc'){
-          rev = 1;
-        }else if(sort === 'desc'){
-          rev = -1;
-        }
-        return function (a,b){
-          let val1 = a[property];
-          let val2 = b[property];
-          if(val1 < val2) {
-            return rev * -1;
-          }
-          if(val1 > val2) {
-            return rev * 1;
-          }
-          return 0;
-        }
-      }
-      this.originalData.sort(compare(orderRule.field,orderRule.sort));
+      arrUtil.order(this.originalData,orderRule.field,orderRule.sort);
       if(document.getElementById(this.id+'divScroll')!==null){
         document.getElementById(this.id+'divScroll').scrollTop = 0;
       }
