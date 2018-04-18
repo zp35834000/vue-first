@@ -157,6 +157,8 @@ export default {
     // 对originalData进行排序操作
     orderData(orderRule) {
       arrUtil.order(this.originalData,orderRule.field,orderRule.sort);
+      this.sortRule[0] = orderRule.field;
+      this.sortRule[1] = orderRule.sort;
       if(document.getElementById(this.id+'divScroll')!==null){
         document.getElementById(this.id+'divScroll').scrollTop = 0;
       }
@@ -191,6 +193,8 @@ export default {
         }
         return result;
       })
+      // 按照已选排序方式进行排序
+      arrUtil.order(this.originalData,this.sortRule[0],this.sortRule[1]);
     },
     // 设置column组件中需要的展示数据，即可以观察到的data数组
     setShowdata() {
