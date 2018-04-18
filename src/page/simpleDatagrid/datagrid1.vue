@@ -16,7 +16,8 @@ export default {
         query: true,
         queryArugs: {
           tag: 'input',
-          condition: '111'
+          condition: '111',
+          compareRule: 'contain'
         }
       },{
         title: '名称',

@@ -38,12 +38,26 @@ export default {
     this.initQueryArr();
   },
   methods: {
+    // 组装过滤条件
+    assembleCondition() {
+      let conditionArr = [];
+      for (let i = 0; i < this.queryArr.length; i++) {
+        let condition = {};
+        let queryObj = this.queryArr[i];
+        condition.key = queryObj.field;
+        condition.value = queryObj.queryArugs.condition;
+        condition.compareRule = queryObj.queryArugs.compareRule;
+        conditionArr.push(condition);
+      }
+      return conditionArr;
+    },
     filter() {
-      console.log('过滤操作');
+      let conditionArr = this.assembleCondition();
+      this.$emit('filterOperateUp',conditionArr);
     },
     // 初始化查询相关数据数组
     initQueryArr() {
-      for (var i = 0; i < this.toolbarQueryData.length; i++) {
+      for (let i = 0; i < this.toolbarQueryData.length; i++) {
         this.queryArr.push(this.toolbarQueryData[i]);
       }
     }

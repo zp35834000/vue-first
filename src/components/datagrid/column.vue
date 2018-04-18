@@ -21,7 +21,11 @@
     <!--数据展示区-->
     <tbody :id="id+'tbList'">
       <tr v-for='data in showData'>
-        <td v-for='info in realColumnInfo' :id='info.field'>{{data[info.field]}}</td>
+        <td
+          v-for='info in realColumnInfo'
+          :id='info.field'>
+          {{data[info.field]}}
+        </td>
       </tr>
     </tbody>
   </div>
