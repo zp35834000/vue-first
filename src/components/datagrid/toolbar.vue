@@ -11,7 +11,8 @@
       <Select
         v-if="queryObj.queryArugs.tag === 'select'"
         v-model="queryObj.queryArugs.condition"
-        style="width:200px">
+        multiple style="width:200px"
+        >
           <Option
             v-for="item in queryObj.queryArugs.options"
             :value="item.value"
@@ -44,13 +45,26 @@ export default {
       for (let i = 0; i < this.queryArr.length; i++) {
         let condition = {};
         let queryObj = this.queryArr[i];
-        condition.key = queryObj.field;
-        condition.value = queryObj.queryArugs.condition;
-        condition.compareRule = queryObj.queryArugs.compareRule;
-        conditionArr.push(condition);
+        if(queryObj.queryArugs.condition instanceof Array) {
+          if(queryObj.queryArugs.condition.length !== 0) {
+            condition.key = queryObj.field;
+            condition.condition = queryObj.queryArugs.condition;
+            condition.compareRule = queryObj.queryArugs.compareRule;
+            conditionArr.push(condition);
+          }
+        }else if(typeof(queryObj.queryArugs.condition) === 'string') {
+          if(queryObj.queryArugs.condition !== '') {
+            condition.key = queryObj.field;
+            condition.condition = queryObj.queryArugs.condition;
+            condition.compareRule = queryObj.queryArugs.compareRule;
+            conditionArr.push(condition);
+          }
+        }
+
       }
       return conditionArr;
     },
+    // 触发过滤事件，将时间传递到父组件
     filter() {
       let conditionArr = this.assembleCondition();
       this.$emit('filterOperateUp',conditionArr);

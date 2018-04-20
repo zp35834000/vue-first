@@ -1,5 +1,6 @@
 let arrUtil = {
   order: function(arr,property,sort) {
+    console.log('排序操作');
     function compare(property,sort) {
       // 默认
       let rev = 1;

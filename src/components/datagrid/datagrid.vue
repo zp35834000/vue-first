@@ -120,7 +120,6 @@ export default {
   },
   watch: {
     pos: function(val) {
-      // this.setShowdata();
       let showDataArray = [];
       let showNum = this.showNum;
       let totalNum = this.originalData.length;
@@ -133,7 +132,6 @@ export default {
       this.showData = showDataArray;
     },
     originalData: function(val) {
-      // this.setShowdata();
       let showDataArray = [];
       let showNum = this.showNum;
       let totalNum = val.length;
@@ -175,39 +173,56 @@ export default {
       // 如{key:'id',value:'1',compareRule:'contain'},比较包含
       // 如{key:'id',value:'1',compareRule:'equal'},比较规则为全等
       this.originalData = this.data.filter((value) => {
+        // debugger;
+        // 默认返回结果
         let result = true;
+        // 遍历过滤条件
         for (let i = 0; i < conditionArr.length; i++) {
-
           let key = conditionArr[i]['key'];
-          let val = conditionArr[i]['value'];
+          let val = conditionArr[i]['condition'];
           let actualVal =  value[key] +'';
-          if(conditionArr[i].compareRule==='contain') {
-            if(actualVal.indexOf(val) === -1) {
-              result = false;
+          // 单个条件判断
+          if(typeof(conditionArr[i].condition) === 'string') {
+            if(conditionArr[i].compareRule==='contain') {
+              if(actualVal.indexOf(val) === -1) {
+                result = false;
+                break;
+              }
+            }else if(conditionArr[i].compareRule==='equal') {
+              if(actualVal !== val) {
+                result = false;
+                break;
+              }
             }
-          }else if(conditionArr[i].compareRule==='equal') {
-            if(actualVal !== val) {
+          }else if(conditionArr[i].condition instanceof Array) {
+            let singleConditionArr = conditionArr[i].condition;
+            let tempResult = false;
+            if(conditionArr[i].compareRule==='contain') {
+              for (let j = 0; j < singleConditionArr.length; j++) {
+                if(actualVal.indexOf(singleConditionArr[j]) !== -1) {
+                  tempResult = true;
+                  break;
+                }
+              }
+            }else if(conditionArr[i].compareRule==='equal') {
+              for (let j = 0; j < singleConditionArr.length; j++) {
+                if(actualVal === singleConditionArr[j]) {
+                  tempResult = true;
+                  break;
+                }
+              }
+            }
+            if(!tempResult) {
               result = false;
+              break;
             }
           }
+
         }
         return result;
       })
       // 按照已选排序方式进行排序
       arrUtil.order(this.originalData,this.sortRule[0],this.sortRule[1]);
-    },
-    // 设置column组件中需要的展示数据，即可以观察到的data数组
-    setShowdata() {
-      let showDataArray = [];
-      let showNum = this.showNum;
-      let totalNum = this.originalData.length;
-      if(totalNum<showNum){
-        showNum = totalNum;
-      }
-      for(let i = 0; i < showNum; i++){
-        showDataArray[i] = this.originalData[this.pos+i];
-      }
-      this.showData = showDataArray;
     }
   }
 }
