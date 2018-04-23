@@ -1,5 +1,7 @@
 import vueDatagrid from './datagrid.vue'
 
+
+
 const datagrid = {
   install(Vue, options) {
     Vue.component(vueDatagrid.name, vueDatagrid)
