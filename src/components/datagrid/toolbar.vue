@@ -1,18 +1,20 @@
 <template>
-  <div id="">
+  <div :id="id+'Toolbar'" style="width:100%;float:left">
     <div class="" v-for='queryObj in queryArr' style="float:left">
-      {{queryObj.title}}:
+      <span style="float:left; height:32px; line-height:32px">
+        {{queryObj.title}}:
+      </span>
       <Input
         v-if="queryObj.queryArugs.tag === 'input'"
         v-model="queryObj.queryArugs.condition"
-        style="width: 200px"
+        style="width: 200px;float:left"
         clearable >
       </Input>
       <Select
         v-if="queryObj.queryArugs.tag === 'select'"
         v-model="queryObj.queryArugs.condition"
-        multiple style="width:200px"
-        >
+        multiple
+        style="width:200px;float:left">
           <Option
             v-for="item in queryObj.queryArugs.options"
             :value="item.value"
@@ -22,7 +24,7 @@
       </Select>
       &nbsp&nbsp&nbsp
     </div>
-    <Button v-if='queryArr.length!==0' type="ghost"  @click='filter'>过滤</Button>
+    <Button v-if='queryArr.length!==0' type="ghost" style="float:right" @click='filter'>过滤</Button>
   </div>
 </template>
 <script>
@@ -33,7 +35,8 @@ export default {
     queryArr: []
   }),
   props: {
-    toolbarQueryData: Array
+    toolbarQueryData: Array,
+    id: String
   },
   created() {
     this.initQueryArr();
@@ -78,5 +81,10 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="css" scoped>
+
+span {
+  cursor: default;
+}
+
 </style>

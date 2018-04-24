@@ -1,6 +1,14 @@
 <template>
-  <div class="">
-    <datagrid :sort-rule='sortRule' :show-num=20 :data='dataList' :id='id' :column-data='columnData'></datagrid>
+  <div class="" style="height:100%">
+    <datagrid
+      :sort-rule='sortRule'
+      :data='dataList'
+      :id='id'
+      :column-data='columnData'
+      :height='height'
+      :width='width'
+      :gap-comp-needed = 'gapCompNeeded'>
+    </datagrid>
   </div>
 </template>
 <script>
@@ -18,7 +26,8 @@ export default {
           tag: 'input',
           condition: '111',
           compareRule: 'contain'
-        }
+        },
+        width: '200px'
       },{
         title: '名称',
         field: 'text',
@@ -36,9 +45,13 @@ export default {
                         value: '22',
                         label: '22'
                     }]
-        }
+        },
+        width: '70px'
       }],
-      sortRule: ['id','asc']
+      sortRule: ['id','asc'],
+      height: '50%',
+      width: '50%',
+      gapCompNeeded: false
     }
   },
   components: {
@@ -52,10 +65,10 @@ export default {
   methods: {
     getData() {
       let dataList = [];
-      for (var i = 0; i < 1000; i++) {
+      for (var i = 0; i < 100000; i++) {
         dataList[i] = {
           id: i,
-          text: 'text'+i
+          text: 'text00000'+i
         }
       }
       return dataList;

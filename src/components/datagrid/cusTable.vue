@@ -1,40 +1,65 @@
 <template>
   <div class="">
-    <!--行标题-->
-    <thead>
-      <tr>
-        <th  v-for='info in realColumnInfo' :key='info.field'>
-          {{info.title}}&nbsp&nbsp&nbsp
-          <div v-if='info.sortable===true' style="float:right">
-            <div class="arrow-up"
-              :class="{arrowUpSelect:sortRuleString===info.field+',asc'}"
-              @click='upArrowSelect(info)'></div>
-            <div style="height:2px"></div>
-            <div class="arrow-down"
-              :class="{arrowDownSelect:sortRuleString===info.field+',desc'}"
-              @click='downArrowSelect(info)'
-            ></div>
-          </div>
-        </th>
-      </tr>
-    </thead>
-    <!--数据展示区-->
-    <tbody :id="id+'tbList'">
-      <tr v-for='data in showData'>
-        <td
-          v-for='info in realColumnInfo'
-          :id='info.field'>
-          {{data[info.field]}}
-        </td>
-      </tr>
-    </tbody>
+    <table
+      class='hovertable'
+      :id="id+'Table'"
+      border="1"
+      :style="{float:'left',tableLayout:'fixed',width:tableWidth}" >
+
+      <!--行标题-->
+      <thead>
+        <tr :id="id+'TableTh'">
+          <th
+            v-for='info in realColumnInfo'
+            :key='info.field'
+            :style="{width:info.width}"
+            :id="id+'Table'+info.field+'Th'">
+            <div class="" style="float:left">
+              <span>
+                {{info.title}}&nbsp&nbsp&nbsp
+              </span>
+            </div>
+
+            <div v-if='info.sortable===true' style="float:left">
+
+              <div class="arrow-up"
+                :class="{arrowUpSelect:sortRuleString===info.field+',asc'}"
+                @click='upArrowSelect(info)'>
+              </div>
+              <div style="height:2px"></div>
+              <div class="arrow-down"
+                :class="{arrowDownSelect:sortRuleString===info.field+',desc'}"
+                @click='downArrowSelect(info)'>
+              </div>
+            </div>
+          </th>
+          <th v-if="gapCompNeeded" :style="{width:gapWidth+'px'}"></th>
+        </tr>
+      </thead>
+      <!--数据展示区-->
+      <tbody :id="id+'tbList'">
+        <tr v-for='data in showData'>
+          <td
+            v-for='info in realColumnInfo'
+            :id='info.field'
+            :style="{width:info.width}">
+            {{data[info.field]}}
+          </td>
+          <td v-if="gapCompNeeded" rowspan="13" >
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
   </div>
 </template>
 <script>
 export default {
   data: () => ({
     sortRuleString: '',
-    sortNeeded: true
+    sortNeeded: true,
+    tableWidth: 0,
+    gapWidth: 0
   }),
   props: {
     // 列信息
@@ -55,6 +80,10 @@ export default {
     // 默认排序规则，0为field，1为asc或desc
     sortRule: {
       type: Array
+    },
+    gapCompNeeded: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -95,14 +124,44 @@ export default {
       if(this.sortRule !== undefined && this.sortRule.length !== 0){
         this.sortRuleString = this.sortRule[0]+','+this.sortRule[1];
       }
+    },
+    // 初始化表格宽度
+    initTableWidth() {
+      let content = document.getElementById(this.id);
+      this.tableWidth = (content.offsetWidth - 19) + 'px';
+    },
+    // 初始化空白策略
+    initGapStrategy() {
+      let gap = parseInt(this.tableWidth);
+      for (let i = 0; i < this.columnInfo.length; i++) {
+        let thDom = document.getElementById(this.id+'Table'+this.columnInfo[i].field+'Th');
+        gap -= thDom.offsetWidth;
+      }
+      this.gapWidth = gap-1;
+      console.log(this.gapWidth);
     }
   },
   mounted() {
     this.initSortRuleString();
+    this.initTableWidth();
+    if(this.gapCompNeeded) {
+      this.initGapStrategy();
+    }
   }
 }
 </script>
 <style lang="css" scoped>
+
+tbody {
+  overflow-y: scroll;
+}
+
+thead {
+  width: calc( 100% - 1em)
+}
+span {
+  cursor: default;
+}
 
 .arrowUpSelect {
   border-bottom:7px solid #2d8cf0 !important;
@@ -174,5 +233,18 @@ td {
     padding: 8px;
     border-style: solid;
     border-color: #a9c6c9;
+    line-height: 13px;
+    overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+}
+
+.hovertable {
+    font-family: verdana,arial,sans-serif;
+    font-size:11px;
+    color:#333333;
+    border-width: 1px;
+    border-color: #999999;
+    border-collapse: collapse;
 }
 </style>

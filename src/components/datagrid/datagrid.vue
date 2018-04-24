@@ -1,21 +1,21 @@
 <template>
-  <div>
+  <div :id='id' :style="{height:height, width:width}">
     <toolbar
       @filterOperateUp = 'filtrationData'
       v-if='toolbarNeeded'
-      :toolbar-query-data='toolbarQueryData'>
+      :toolbar-query-data='toolbarQueryData'
+      :id='id'>
     </toolbar>
-    <table class='hovertable' :id='id' border="0" style="float:left" >
-      <column
-        @dataSortRuleUp='orderData'
-        :sort-rule='sortRule'
-        :show-data='showData'
-        :id='id'
-        :column-info='columnData'>
-      </column>
-    </table>
+    <cus-table
+      @dataSortRuleUp='orderData'
+      :sort-rule='sortRule'
+      :show-data='showData'
+      :id='id'
+      :column-info='columnData'
+      :gap-comp-needed='gapCompNeeded'>
+    </cus-table>
     <div class="" style="float:left">
-      <div id="" style="height:34px">
+      <div id="" style="height:35px">
       </div>
       <div v-if='showScroll'
         :id="id+'divScroll'"
@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import column from './column'
+import cusTable from './cusTable'
 import toolbar from './toolbar'
 import Vue from 'vue';
 import iView from 'iview';
@@ -43,16 +43,17 @@ Vue.use(iView);
 export default {
   name: 'datagrid',
   data: () => ({
-    itemSize: 35, //单项尺寸
+    itemSize: 30, //单项尺寸
     pos: 0, // 当前滚动位置
     // 存储了传入的data值，深复制操作
     // 理论上来说在排序和筛选的时候操作props中data值即可，但是可能出现问题，操作该数组
     originalData: [],
     showData: [], // 需要展示的数据，详情定义方式见setShowdata方法
-    scrollDivHigh: 0
+    scrollDivHigh: 0,
+    showNum: 10 // 展示数据个数
   }),
   components: {
-    column,
+    cusTable,
     toolbar
   },
   props: {
@@ -71,20 +72,27 @@ export default {
       type: Array,
       required: true
     },
-    // 展示数据个数
-    showNum: {
-      type: Number,
-      default: 20
-    },
-    // 排序规则，0为field，1为asc或desc
     sortRule: {
       type: Array,
       default: function() {
         return [];
       }
+    },
+    height: {
+      type: String,
+      default: '100%'
+    },
+    width: {
+      type: String,
+      default: '100%'
+    },
+    gapCompNeeded: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
+    this.initShowNum();
   },
   created() {
     // 将props中data值深复制到originalData中
@@ -92,7 +100,7 @@ export default {
   },
   computed: {
     // 是否显示滚动条
-    showScroll(){
+    showScroll() {
       if(this.originalData.length>this.showNum){
         return true;
       }else{
@@ -223,19 +231,26 @@ export default {
       })
       // 按照已选排序方式进行排序
       arrUtil.order(this.originalData,this.sortRule[0],this.sortRule[1]);
+    },
+    // 根据分配高度初始化显示数据条数
+    initShowNum() {
+      let content = document.getElementById(this.id);
+      let toolbarDom = document.getElementById(this.id+'Toolbar');
+      let tableThDom = document.getElementById(this.id+'TableTh');
+      let tdListHeight = content.offsetHeight-tableThDom.offsetHeight;
+      if(toolbarDom!==null) {
+        tdListHeight -= toolbarDom.offsetHeight;
+      }
+
+      this.showNum = parseInt(tdListHeight/30);
     }
   }
 }
 </script>
 <style lang="css" scoped>
 
-.hovertable {
-    font-family: verdana,arial,sans-serif;
-    font-size:11px;
-    color:#333333;
-    border-width: 1px;
-    border-color: #999999;
-    border-collapse: collapse;
+span {
+  cursor: default;
 }
 
 </style>
