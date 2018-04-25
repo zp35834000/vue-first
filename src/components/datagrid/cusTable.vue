@@ -128,7 +128,12 @@ export default {
     // 初始化表格宽度
     initTableWidth() {
       let content = document.getElementById(this.id);
-      this.tableWidth = (content.offsetWidth - 19) + 'px';
+      let dicScrollDom = document.getElementById(this.id+'divScroll');
+      let tableWidthNum = content.offsetWidth;
+      if(dicScrollDom!=null) {
+        tableWidthNum -= dicScrollDom.offsetWidth;
+      }
+      this.tableWidth = tableWidthNum + 'px';
     },
     // 初始化空白策略
     initGapStrategy() {

@@ -65,10 +65,10 @@ export default {
   methods: {
     getData() {
       let dataList = [];
-      for (var i = 0; i < 100000; i++) {
+      for (var i = 0; i < 10; i++) {
         dataList[i] = {
           id: i,
-          text: 'text00000'+i
+          text: 'text'+i
         }
       }
       return dataList;

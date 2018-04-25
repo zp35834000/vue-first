@@ -6,14 +6,14 @@
       :toolbar-query-data='toolbarQueryData'
       :id='id'>
     </toolbar>
-    <cus-table
+    <cusTable
       @dataSortRuleUp='orderData'
       :sort-rule='sortRule'
       :show-data='showData'
       :id='id'
       :column-info='columnData'
       :gap-comp-needed='gapCompNeeded'>
-    </cus-table>
+    </cusTable>
     <div class="" style="float:left">
       <div id="" style="height:35px">
       </div>
