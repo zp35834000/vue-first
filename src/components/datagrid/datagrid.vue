@@ -89,10 +89,16 @@ export default {
     gapCompNeeded: {
       type: Boolean,
       default: false
+    },
+    // 鼠标滚动时候数据变化条数
+    mouseScrollNum: {
+      type: Number,
+      default: 3
     }
   },
   mounted() {
     this.initShowNum();
+    this.bindScrollDivMouseScroll();
   },
   created() {
     // 将props中data值深复制到originalData中
@@ -243,6 +249,56 @@ export default {
       }
 
       this.showNum = parseInt(tdListHeight/30);
+    },
+    // 表格增加鼠标滚动事件，和右侧滚动条联动
+    bindScrollDivMouseScroll() {
+      let scrollDivDom = document.getElementById(this.id+'divScroll');
+      let tbListDom = document.getElementById(this.id+'tbList');
+      let mouseScrollNum = this.mouseScrollNum;
+      let _this = this;
+      let scrollFunc=function(e){
+        // debugger;
+        console.log(_this.pos);
+        let direct=0;
+
+        if(e.wheelDelta){//IE/Opera/Chrome
+          direct = e.wheelDelta;
+        }else if(e.detail){//Firefox
+          direct = e.detail;
+        }
+        let top = scrollDivDom.scrollTop;
+        if(direct > 0) {
+          // 鼠标滚轮向上触发
+          if(_this.pos > mouseScrollNum) {
+            _this.pos = _this.pos - mouseScrollNum;
+          }else {
+            _this.pos = 0;
+          }
+
+        }
+        if(direct < 0) {
+          // 鼠标滚轮向下触发
+          let totalShowNum = _this.originalData.length;
+          let showNum = _this.showNum;
+          let maxPos = totalShowNum - showNum;
+          if(maxPos - _this.pos > mouseScrollNum) {
+            _this.pos = _this.pos + mouseScrollNum;
+          }else {
+            _this.pos = maxPos;
+          }
+        }
+        scrollDivDom.scrollTop = _this.pos * _this.itemSize;
+      }
+
+      if(scrollDivDom !== null) {
+        /*注册事件*/
+        if(document.addEventListener){
+          //W3C
+          tbListDom.addEventListener('DOMMouseScroll',scrollFunc,false);
+        }
+        //IE/Opera/Chrome/Safari
+        tbListDom.onmousewheel=scrollFunc;
+      }
     }
   }
 }

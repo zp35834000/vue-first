@@ -129,7 +129,7 @@ export default {
     initTableWidth() {
       let content = document.getElementById(this.id);
       let dicScrollDom = document.getElementById(this.id+'divScroll');
-      let tableWidthNum = content.offsetWidth;
+      let tableWidthNum = content.offsetWidth - 1;
       if(dicScrollDom!=null) {
         tableWidthNum -= dicScrollDom.offsetWidth;
       }
