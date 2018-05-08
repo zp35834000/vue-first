@@ -7,7 +7,8 @@
       :column-data='columnData'
       :height='height'
       :width='width'
-      :gap-comp-needed = 'gapCompNeeded'>
+      :gap-comp-needed = 'gapCompNeeded'
+      :mouse-scroll-num = 5>
     </datagrid>
   </div>
 </template>

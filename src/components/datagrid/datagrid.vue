@@ -258,7 +258,6 @@ export default {
       let _this = this;
       let scrollFunc=function(e){
         // debugger;
-        console.log(_this.pos);
         let direct=0;
 
         if(e.wheelDelta){//IE/Opera/Chrome
