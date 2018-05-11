@@ -14,6 +14,8 @@
 </template>
 <script>
 import datagrid from '../../components/datagrid/datagrid'
+import axios from 'axios'
+
 export default {
   data(){
     return {
@@ -62,6 +64,22 @@ export default {
     dataList(){
       return this.getData();
     }
+  },
+  mounted: {
+    // axios.post('http://www.xyz.com/request', 'qs.stringify(params)')
+    // .then(response => {
+    //   console.log(response);
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    // });
+    // axios.get('/user?ID=12345')
+    // .then(function (response) {
+    //   console.log(response);
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // })
   },
   methods: {
     getData() {
